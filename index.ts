@@ -6,7 +6,7 @@ function rand(min, max) {
 }
 
 async function fetchGelbooru(sub: string) {
-    const res = await fetch(`https://gelbooru.com/index.php?page=dapi&s=post&q=index&tags=-rating%3aexplicit+-rating%3aquestionable+1boy+-1girl+-2girls+-3girls+-4girls+-5girls+-6%2bboys&json=1`);
+    const res = await fetch(`https://gelbooru.com/index.php?page=dapi&s=post&q=index&${tags}&json=1`);
     const resp = await res.json();
     try {
         const { children } = resp.data;
@@ -38,13 +38,19 @@ export default definePlugin({
                 required: false,
             },
         ],
-
-
-            console.error(sub);
-
+            
+            async execute(args) {
+            let tags = "tags=-rating%3aexplicit+-rating%3aquestionable+1boy+-1girl+-2girls+-3girls+-4girls+-5girls+-6%2bboys+-abs+-muscular+-mature_male+-gladiator+-shota+-child+-beard";
+            console.error(args);
+            if (args.length > 0) {
+                const v = args[0].value as any as boolean;
+                if (v) {
+                    tags = "tags=-rating%3aexplicit+-rating%3aquestionable+1boy+-1girl+-2girls+-3girls+-4girls+-5girls+-6%2bboys+-abs+-muscular+-mature_male+-gladiator+-shota+cat_boy";
+                }
+            }
             return {
                 content: await fetchGelbooru(sub),
             };
         },
-    }]
-});
+    ]}
+);
