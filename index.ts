@@ -5,13 +5,13 @@ function rand(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-async function fetchReddit(sub: string) {
-    const res = await fetch(`https://www.reddit.com/r/${sub}/top.json?limit=100&t=all`);
+async function fetchGelbooru(sub: string) {
+    const res = await fetch(`https://gelbooru.com/index.php?page=dapi&s=post&q=index&tags=-rating%3aexplicit+-rating%3aquestionable+1boy+-1girl+-2girls+-3girls+-4girls+-5girls+-6%2bboys&json=1`);
     const resp = await res.json();
     try {
         const { children } = resp.data;
         let r = rand(0, children.length-1);
-        return children[r].data.url;
+        return children[r].data.file_url;
     } catch (err) {
         console.error(resp);
         console.error(err);
@@ -20,7 +20,7 @@ async function fetchReddit(sub: string) {
 }
 
 export default definePlugin({
-    name: "Cute-Anime-Boys",
+    name: "Cute-Anime-Boys Gelbooru",
     authors: [{
         name: "Shady Goat",
         id: BigInt(376079696489742338),
@@ -39,20 +39,11 @@ export default definePlugin({
             },
         ],
 
-        async execute(args) {
-            let sub = "cuteanimeboys";
-            console.error(args);
-            if (args.length > 0) {
-                const v = args[0].value as any as boolean;
-                if (v) {
-                    sub = "animecatboys";
-                }
-            }
 
             console.error(sub);
 
             return {
-                content: await fetchReddit(sub),
+                content: await fetchGelbooru(sub),
             };
         },
     }]
