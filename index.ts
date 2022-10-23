@@ -6,7 +6,7 @@ function rand(min, max) {
 }
 
 async function fetchGelbooru(tags: string) {
-    const res = await fetch(`https://young-reef-52365.herokuapp.com/https://gelbooru.com/index.php?page=dapi&s=post&limit=1&api_key=994a0990e5ba027504b800dda44346c093d20634838c10ad625d831bee5340f8&user_id=700181&q=index&tags=-rating%3aexplicit+-rating%3aquestionable+-rating:sensitive+${tags}+1boy+-1girl+-2girls+-3girls+-4girls+-5girls+-6%2bgirls+-abs+-muscular+-mature_male+-gladiator+-shota+-beard+sort:random&json=1`);
+    const res = await fetch(`https://young-reef-52365.herokuapp.com/https://gelbooru.com/index.php?page=dapi&s=post&limit=1&q=index&tags=-rating%3aexplicit+-rating%3aquestionable+-rating:sensitive+${tags}+1boy+-1girl+-2girls+-3girls+-4girls+-5girls+-6%2bgirls+-abs+-muscular+-mature_male+-gladiator+-shota+-beard+sort:random&json=1`);
     const resp = await res.json();
     try {
         const { post } = resp;
