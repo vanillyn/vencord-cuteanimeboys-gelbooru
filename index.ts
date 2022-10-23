@@ -5,13 +5,12 @@ function rand(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-async function fetchGelbooru(sub: string) {
-    const res = await fetch(`https://gelbooru.com/index.php?page=dapi&s=post&q=index&${tags}&json=1`);
+async function fetchGelbooru(tags: string) {
+    const res = await fetch(`https://young-reef-52365.herokuapp.com/https://gelbooru.com/index.php?page=dapi&s=post&limit=1&api_key=994a0990e5ba027504b800dda44346c093d20634838c10ad625d831bee5340f8&user_id=700181&q=index&tags=-rating%3aexplicit+-rating%3aquestionable+-rating:sensitive+${tags}+1boy+-1girl+-2girls+-3girls+-4girls+-5girls+-6%2bgirls+-abs+-muscular+-mature_male+-gladiator+-shota+-beard+sort:random&json=1`);
     const resp = await res.json();
     try {
-        const { children } = resp.data;
-        let r = rand(0, children.length-1);
-        return children[r].data.file_url;
+        const { post } = resp;
+        return post[0].file_url;
     } catch (err) {
         console.error(resp);
         console.error(err);
@@ -40,16 +39,16 @@ export default definePlugin({
         ],
             
             async execute(args) {
-            let tags = "tags=-rating%3aexplicit+-rating%3aquestionable+1boy+-1girl+-2girls+-3girls+-4girls+-5girls+-6%2bboys+-abs+-muscular+-mature_male+-gladiator+-shota+-child+-beard";
+            let tags = "trap+-child";
             console.error(args);
             if (args.length > 0) {
                 const v = args[0].value as any as boolean;
                 if (v) {
-                    tags = "tags=-rating%3aexplicit+-rating%3aquestionable+1boy+-1girl+-2girls+-3girls+-4girls+-5girls+-6%2bboys+-abs+-muscular+-mature_male+-gladiator+-shota+cat_boy";
+                    tags = "cat_boy";
                 }
             }
             return {
-                content: await fetchGelbooru(sub),
+                content: await fetchGelbooru(tags),
             };
         },
     }]
